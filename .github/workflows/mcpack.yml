@@ -12,14 +12,19 @@ jobs:
         with:
           files: .
           dest: skyblock_build_github_latest.mcpack
+      - name: Retrieve date and time
+        run: |
+          echo "::set-output name=dt::$(date +"%Y-%m-%d %T")"
+          echo "::set-output name=dtr::$(date '+%Y%m%d%H%M%S')"
+        id: dt
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: nightly-tag-${{ steps.date.outputs.date }}
-          release_name: nightly-release-${{ steps.date.outputs.date }}
+          tag_name: nightly-${{ steps.dt.outputs.dtr }}
+          release_name: Nightly ${{ steps.dt.outputs.dt }}
           body: |
             A new build/release, yay!
           draft: false
