@@ -27,15 +27,17 @@ jobs:
           echo "::set-output name=dt::$(date +"%Y-%m-%d %T")"
           echo "::set-output name=dtr::$(date '+%Y%m%d%H%M%S')"
         id: dt
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
       - name: Update CHANGELOG
         id: changelog
         uses: Requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
-          tag: ${{ steps.get-latest-tag.outputs.tag }}
+          tag: ${{ steps.previoustag.outputs.tag }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
