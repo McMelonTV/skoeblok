@@ -12,7 +12,7 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         with:
-          bump: major
+          bump: patch
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v2
       - uses: papeloto/action-zip@v1
