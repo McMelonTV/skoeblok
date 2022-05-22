@@ -1,1 +1,1 @@
-# hypixel-skyblock-remake-bedrock
+[![Download Nightly](https://img.shields.io/badge/dynamic/json.svg?label=nightly&url=https://api.github.com/repos/McMelonTV/hypixel-skyblock-remake-bedrock/releases/latest&query=$.assets[0].name&style=for-the-badge)](https://html.yt-dl.tk/github/redirect/redirect.html)
