@@ -7,12 +7,17 @@ jobs:
   zip-files:
     runs-on: ubuntu-latest
     steps:
+      - id: next_version
+        uses: zwaldowski/semver-release-action@v1
+        with:
+          bump: prerelease
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v2
       - uses: papeloto/action-zip@v1
         with:
           recursive: false
           files: functions/ manifest.json readme.txt
-          dest: skyblock_build_github_latest.mcpack
+          dest: skyblock-{{ steps.next_version.outputs.version_optimistic }}.mcpack
       - name: Retrieve date and time
         run: |
           echo "::set-output name=dt::$(date +"%Y-%m-%d %T")"
@@ -24,8 +29,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: nightly-${{ steps.dt.outputs.dtr }}
-          release_name: Nightly ${{ steps.dt.outputs.dt }}
+          tag_name: nightly-{{ steps.next_version.outputs.version_optimistic }} # ${{ steps.dt.outputs.dtr }}
+          release_name: Nightly {{ steps.next_version.outputs.version_optimistic }} # ${{ steps.dt.outputs.dt }}
           body: |
             ${{ steps.Changelog.outputs.changelog }}
           draft: false
