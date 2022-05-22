@@ -27,17 +27,6 @@ jobs:
           echo "::set-output name=dt::$(date +"%Y-%m-%d %T")"
           echo "::set-output name=dtr::$(date '+%Y%m%d%H%M%S')"
         id: dt
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-      - name: Update CHANGELOG
-        id: changelog
-        uses: Requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          tag: ${{ steps.previoustag.outputs.tag }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -46,7 +35,8 @@ jobs:
         with:
           tag_name: nightly-${{ steps.next_version.outputs.version }}-${{ steps.dt.outputs.dtr }}
           release_name: Nightly ${{ steps.next_version.outputs.version }} - ${{ steps.dt.outputs.dt }}
-          body: ${{ steps.changelog.outputs.changes }}
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
           draft: false
           prerelease: true
       - name: Upload Release Asset
