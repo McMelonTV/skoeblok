@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: papeloto/action-zip@v1
         with:
-          files: .
+          files: functions/ manifest.json readme.txt
           dest: skyblock_build_github_latest.mcpack
       - name: Retrieve date and time
         run: |
@@ -26,7 +26,7 @@ jobs:
           tag_name: nightly-${{ steps.dt.outputs.dtr }}
           release_name: Nightly ${{ steps.dt.outputs.dt }}
           body: |
-            A new build/release, yay!
+            ${{ steps.Changelog.outputs.changelog }}
           draft: false
           prerelease: true
       - name: Upload Release Asset
