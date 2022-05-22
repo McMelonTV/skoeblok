@@ -27,6 +27,12 @@ jobs:
           echo "::set-output name=dt::$(date +"%Y-%m-%d %T")"
           echo "::set-output name=dtr::$(date '+%Y%m%d%H%M%S')"
         id: dt
+      - name: Update CHANGELOG
+        id: changelog
+        uses: Requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -35,8 +41,7 @@ jobs:
         with:
           tag_name: nightly-${{ steps.next_version.outputs.version }}-${{ steps.dt.outputs.dtr }}
           release_name: Nightly ${{ steps.next_version.outputs.version }} - ${{ steps.dt.outputs.dt }}
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
+          body: ${{ steps.changelog.outputs.changes }}
           draft: false
           prerelease: true
       - name: Upload Release Asset
