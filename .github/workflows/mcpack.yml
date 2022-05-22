@@ -1,7 +1,9 @@
 name: Nightly
 
 on:
-  push
+  push:
+    branches:    
+      - 'main'
 
 jobs:
   zip-files:
