@@ -19,7 +19,7 @@ jobs:
         with:
           recursive: false
           files: functions/ manifest.json readme.txt
-          dest: skyblock-{{ steps.next_version.outputs.version_optimistic }}.mcpack
+          dest: skyblock-${{ steps.next_version.outputs.version_optimistic }}.mcpack
       - name: Retrieve date and time
         run: |
           echo "::set-output name=dt::$(date +"%Y-%m-%d %T")"
@@ -31,8 +31,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: nightly-{{ steps.next_version.outputs.version_optimistic }} # ${{ steps.dt.outputs.dtr }}
-          release_name: Nightly {{ steps.next_version.outputs.version_optimistic }} # ${{ steps.dt.outputs.dt }}
+          tag_name: nightly-${{ steps.next_version.outputs.version_optimistic }} # ${{ steps.dt.outputs.dtr }}
+          release_name: Nightly ${{ steps.next_version.outputs.version_optimistic }} # ${{ steps.dt.outputs.dt }}
           body: |
             ${{ steps.Changelog.outputs.changelog }}
           draft: false
@@ -44,6 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./skyblock_build_github_latest.mcpack
-          asset_name: skyblock_build_github_latest.mcpack
+          asset_path: ./skyblock-${{ steps.next_version.outputs.version_optimistic }}.mcpack
+          asset_name: skyblock-${{ steps.next_version.outputs.version_optimistic }}.mcpack
           asset_content_type: application/zip
