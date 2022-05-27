@@ -1,15 +1,15 @@
 {
     "format_version": 1,
     "header": {
-        "name": "Skoeblok by McMelonTV v1.0.1",
+        "name": "Skoeblok by McMelonTV vVERSION",
         "description": "A SkyBlock addon inspired by Hypixel SkyBlock",
-        "uuid": "8580e885-1625-4a21-9a2c-8cf9c1ba939b",
+        "uuid": "UUID1",
         "version": [1, 0, 1]
     },
     "modules": [
         {
             "type": "data",
-            "uuid": "7725607e-23f0-49e5-89ba-cf0ec6f27983",
+            "uuid": "UUID2",
             "version": [1, 0, 1]
         }
     ]
