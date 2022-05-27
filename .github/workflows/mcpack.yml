@@ -9,6 +9,11 @@ jobs:
   zip-files:
     runs-on: ubuntu-latest
     steps:
+      - name: Get uuids
+        id: uuid
+        run: | 
+            echo "::set-output name=UUID1::$(uuidgen)"
+            echo "::set-output name=UUID2::$(uuidgen)"
       - id: next_version
         uses: zwaldowski/semver-release-action@v1
         env:
@@ -17,6 +22,24 @@ jobs:
           bump: patch
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v2
+      - name: Replace UUID1
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "UUID1"
+          replace: ${{ steps.uuid.outputs.UUID1 }}
+          include: "manifest.json"
+      - name: Replace UUID2
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "UUID2"
+          replace: ${{ steps.uuid.outputs.UUID2 }}
+          include: "manifest.json"
+      - name: Replace UUID1
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "VERSION"
+          replace: ${{ steps.next_version.outputs.version }}
+          include: "manifest.json"
       - uses: papeloto/action-zip@v1
         with:
           recursive: false
